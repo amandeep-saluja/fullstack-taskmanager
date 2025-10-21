@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -34,28 +33,37 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        String frontendUrl = System.getenv("FRONTEND_URL") != null
+                ? System.getenv("FRONTEND_URL")
+                : "http://localhost:5173";
+        logger.info("Frontend URL: {}", frontendUrl);
+
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                // CSRF configuration: ignore CSRF for REST endpoints
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/auth/**", "/health")
+                )
+                // CORS configuration
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    String frontendUrl = System.getenv("FRONTEND_URL") != null
-                            ? System.getenv("FRONTEND_URL")
-                            : "http://localhost:5173";
-                    logger.info("Frontend URL: {}", frontendUrl);
                     config.setAllowedOrigins(List.of(frontendUrl));
-                    config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
-                    config.setAllowedHeaders(List.of("Authorization","Content-Type"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setAllowCredentials(true);
                     return config;
                 }))
+                // Authorization rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/health").permitAll()
                         .anyRequest().authenticated()
                 )
+                // JWT filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
