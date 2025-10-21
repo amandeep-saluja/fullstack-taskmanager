@@ -24,6 +24,7 @@ public class TaskController {
     @GetMapping
     public List<Task> getTasks(Authentication auth) {
         String username = auth.getName();
+        System.out.println("Authenticated user: " + username);
         User user = userRepo.findByUsername(username).orElseThrow();
         return taskRepo.findByUserId(user.getId());
     }
