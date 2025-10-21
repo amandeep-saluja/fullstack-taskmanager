@@ -1,5 +1,7 @@
 package com.smarttask.backend.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Configuration
 public class SecurityConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     private final JwtAuthFilter jwtAuthFilter;
 
@@ -37,7 +41,7 @@ public class SecurityConfig {
                     String frontendUrl = System.getenv("FRONTEND_URL") != null
                             ? System.getenv("FRONTEND_URL")
                             : "http://localhost:5173";
-                    System.out.println("Frontend URL: " + frontendUrl);
+                    logger.info("Frontend URL: {}", frontendUrl);
                     config.setAllowedOrigins(List.of(frontendUrl));
                     config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
                     config.setAllowedHeaders(List.of("Authorization","Content-Type"));
