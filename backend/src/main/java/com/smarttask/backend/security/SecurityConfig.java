@@ -37,6 +37,7 @@ public class SecurityConfig {
                     String frontendUrl = System.getenv("FRONTEND_URL") != null
                             ? System.getenv("FRONTEND_URL")
                             : "http://localhost:5173";
+                    System.out.println("Frontend URL: " + frontendUrl);
                     config.setAllowedOrigins(List.of(frontendUrl));
                     config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
                     config.setAllowedHeaders(List.of("Authorization","Content-Type"));
