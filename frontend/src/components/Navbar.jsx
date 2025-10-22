@@ -1,12 +1,12 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const logout = () => {
-        localStorage.removeItem('token')
-        navigate('/login')
-    }
+        localStorage.removeItem('token');
+        navigate('/login');
+    };
 
     return (
         <nav className="bg-blue-600 text-white p-3 flex justify-between items-center">
@@ -23,5 +23,5 @@ export default function Navbar() {
                 Logout
             </button>
         </nav>
-    )
+    );
 }
