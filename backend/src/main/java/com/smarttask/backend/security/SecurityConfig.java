@@ -42,7 +42,7 @@ public class SecurityConfig {
         http
                 // CSRF configuration: ignore CSRF for REST endpoints
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/auth/**", "/health")
+                        .ignoringRequestMatchers("/api/auth/**", "/api/tasks/**", "/health")
                 )
                 // CORS configuration
                 .cors(cors -> cors.configurationSource(request -> {
