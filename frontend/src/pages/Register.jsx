@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import api from '../api/axiosClient';
 import { useNavigate, Link } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -33,8 +34,8 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200">
-            {/* App Title / Brand Bar */}
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 px-4">
+            {/* App Title / Brand */}
             <div className="absolute top-6 text-center">
                 <h1 className="text-3xl font-extrabold text-indigo-700 tracking-wide">
                     Taskify
@@ -47,7 +48,7 @@ export default function Register() {
             {/* Form Card */}
             <form
                 onSubmit={handleSubmit}
-                className="bg-white p-8 rounded-2xl shadow-xl w-80 sm:w-96 mt-10"
+                className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md mt-10"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
                     Create an Account
@@ -58,7 +59,7 @@ export default function Register() {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none"
+                    className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none transition"
                 />
 
                 <input
@@ -66,7 +67,7 @@ export default function Register() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="border border-gray-300 p-3 w-full mb-6 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none"
+                    className="border border-gray-300 p-3 w-full mb-6 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none transition"
                 />
 
                 <button
@@ -78,21 +79,28 @@ export default function Register() {
                             : 'bg-indigo-600 hover:bg-indigo-700'
                     }`}
                 >
-                    {loading ? 'Registering...' : 'Register'}
+                    {loading ? (
+                        <div className="flex justify-center items-center gap-2">
+                            <ClipLoader size={20} color="#fff" />
+                            Registering...
+                        </div>
+                    ) : (
+                        'Register'
+                    )}
                 </button>
 
                 <p className="text-sm text-center mt-4 text-gray-600">
                     Already have an account?{' '}
                     <Link
                         to="/login"
-                        className="text-indigo-600 hover:underline"
+                        className="text-indigo-600 font-medium hover:underline"
                     >
                         Login
                     </Link>
                 </p>
             </form>
 
-            <footer className="mt-10 text-gray-500 text-xs">
+            <footer className="mt-10 text-gray-500 text-xs text-center">
                 © {new Date().getFullYear()} Taskify. All rights reserved.
             </footer>
         </div>

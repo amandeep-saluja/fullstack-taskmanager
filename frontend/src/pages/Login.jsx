@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import api from '../api/axiosClient';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast'; // Make sure to install react-hot-toast
-import ClipLoader from 'react-spinners/ClipLoader'; // For spinner
+import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -36,10 +36,21 @@ export default function Login() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 px-4">
+            {/* App Title / Brand */}
+            <div className="absolute top-6 text-center">
+                <h1 className="text-3xl font-extrabold text-indigo-700 tracking-wide">
+                    Taskify
+                </h1>
+                <p className="text-gray-600 text-sm">
+                    Your Personal Task Manager
+                </p>
+            </div>
+
+            {/* Form Card */}
             <form
                 onSubmit={handleSubmit}
-                className="bg-white p-8 rounded-2xl shadow-lg w-96"
+                className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md mt-10"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
                     Login to Your Account
@@ -50,7 +61,7 @@ export default function Login() {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="border border-gray-300 p-3 w-full mb-4 rounded focus:ring-2 focus:ring-blue-400"
+                    className="border border-gray-300 p-3 w-full mb-4 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none transition"
                 />
 
                 <input
@@ -58,16 +69,16 @@ export default function Login() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="border border-gray-300 p-3 w-full mb-5 rounded focus:ring-2 focus:ring-blue-400"
+                    className="border border-gray-300 p-3 w-full mb-6 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none transition"
                 />
 
                 <button
                     type="submit"
                     disabled={loading}
-                    className={`w-full py-2.5 rounded text-white font-semibold ${
+                    className={`w-full py-3 rounded-lg text-white font-semibold transition ${
                         loading
-                            ? 'bg-gray-400'
-                            : 'bg-blue-600 hover:bg-blue-700'
+                            ? 'bg-indigo-300 cursor-not-allowed'
+                            : 'bg-indigo-600 hover:bg-indigo-700'
                     }`}
                 >
                     {loading ? (
@@ -82,14 +93,18 @@ export default function Login() {
 
                 <p className="text-sm text-center mt-4 text-gray-600">
                     New user?{' '}
-                    <a
-                        href="/register"
-                        className="text-blue-600 font-medium hover:underline"
+                    <Link
+                        to="/register"
+                        className="text-indigo-600 font-medium hover:underline"
                     >
                         Register
-                    </a>
+                    </Link>
                 </p>
             </form>
+
+            <footer className="mt-10 text-gray-500 text-xs text-center">
+                © {new Date().getFullYear()} Taskify. All rights reserved.
+            </footer>
         </div>
     );
 }
